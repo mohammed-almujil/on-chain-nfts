@@ -1,2 +1,2 @@
 # nft-tracker
-Track on chain NFT mints/transfers
+Track on-chain NFT mints/transfers
