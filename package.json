@@ -1,0 +1,43 @@
+{
+  "name": "on-chain-nft",
+  "version": "1.0.0",
+  "description": "Get on-chain NFT mints/transfer on the ETH blockchains",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohammed-almujil/on-chain-nft.git"
+  },
+  "keywords": [
+    "on-chain",
+    "nft",
+    "get",
+    "retrieve",
+    "mints",
+    "transfers",
+    "ERC721",
+    "REC1155"
+  ],
+  "author": "Mohammed Almujil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohammed-almujil/on-chain-nft/issues"
+  },
+  "homepage": "https://github.com/mohammed-almujil/on-chain-nft#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "web3": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "eslint": "^8.33.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^4.9.5"
+  }
+}
