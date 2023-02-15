@@ -7,7 +7,8 @@ class NFT {
     from: string;
     to: string;
     token_contract: number;
-    token_id: string;
+    token_id: number;
+    token_uri: string;
 
     constructor(nft: any) {
         this.nft_type = nft.nft_type;
@@ -19,6 +20,7 @@ class NFT {
         this.to = nft.to;
         this.token_contract = nft.token_contract;
         this.token_id = nft.token_id;
+        this.token_uri = nft.token_uri;
     }
 
     toDict() {
@@ -32,6 +34,7 @@ class NFT {
             to: this.to,
             token_contract: this.token_contract,
             token_id: this.token_id,
+            token_uri: this.token_uri,
         };
     }
 }

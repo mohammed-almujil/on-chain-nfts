@@ -1,15 +1,11 @@
-import * as dotEnv from 'dotenv'
-dotEnv.config()
 import * as eth from './src/eth'
+import {NFTOptions} from './src/models';
 
-
-async function getNFTs(blockNumber: string | number) {
-     let NFTs = await eth.getNFTs(blockNumber)
+async function getERC721(NFTOptions: NFTOptions) {
+     let NFTs = await eth.getERC721(NFTOptions.blockNumber)
      const result = NFTs.map((nft) => nft.toDict());
-
-     console.log(result)
-     console.log('found ' + result.length + ' NFTs')
      return result
 }
 
-getNFTs('latest');
+module.exports.setEthProvider = async (provider :string) => eth.setProvider(provider);
+module.exports.getERC721 = async ({ blockNumber = 'latest' }) => await getERC721(new NFTOptions({ blockNumber: blockNumber, }));

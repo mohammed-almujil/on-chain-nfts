@@ -4,7 +4,7 @@
   "description": "Get on-chain NFT mints/transfer on the ETH blockchains",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node test.ts && exit 1"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/mohammed-almujil/on-chain-nft#readme",
   "dependencies": {
-    "dotenv": "^16.0.3",
     "web3": "^1.8.1"
   },
   "devDependencies": {
