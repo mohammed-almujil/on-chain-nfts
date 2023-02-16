@@ -2,7 +2,6 @@ const onChainNFT = require('./index')
 
 async function test() {
 
-    console.log(process.env);
     onChainNFT.setEthProvider(process.env.PROVIDER_URL)
     console.log('# Testing get latest ERC721 with 100 block confirmations')
     const defaultOption  = await onChainNFT.getERC721({
@@ -26,6 +25,14 @@ async function test() {
     blockNumberOption  = await onChainNFT.getERC721({blockNumber:blockNumber})
     console.log(blockNumberOption);
     console.log('found ' + blockNumberOption.length + ' NFTs in block '+ blockNumber); 
+
+    console.log('-------------------------------------------'); 
+    console.log('# Testing get NFTs with TX that has token burn')
+    blockNumber = 16640530
+    blockNumberOption  = await onChainNFT.getERC721({blockNumber:blockNumber})
+    console.log(blockNumberOption);
+    console.log('found ' + blockNumberOption.length + ' NFTs in block '+ blockNumber); 
+
 }
 
 

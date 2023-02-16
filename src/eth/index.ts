@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 const web3 = new Web3();
 
-import { NFT,TX_TYPE, STORAGE_PREFIX } from '../models';
+import { NFT, TX_TYPE } from '../models';
 import * as ABIs from './ABI';
 import { Log } from './models';
 
@@ -40,17 +40,17 @@ async function parseERC721Log(log: Log) {
 
         let transaction = web3.eth.abi.decodeLog(ABIs.ERC721Transfer, log.data, [log.topics[1], log.topics[2], log.topics[3]]);
         const txType = getTXType(transaction);
-        console.log(log.address,transaction.tokenId, log.transactionHash);
-        const erc721Contract =  new web3.eth.Contract(ABIs.ERC721, log.address);
-        
-        const uri = await erc721Contract.methods.tokenURI(transaction.tokenId).call().catch((err:any) => {
-                console.log(err.data, 'TokenURI not found');
-           });
-        if(!uri && txType != TX_TYPE.BURN){
-            console.log('This is not a burn call, skipping');
-            return;
-        }
+        console.log(log.address, transaction.tokenId, log.transactionHash);
+        const erc721Contract = new web3.eth.Contract(ABIs.ERC721, log.address);
 
+
+        const uri = await erc721Contract.methods.tokenURI(transaction.tokenId).call().catch((err: any) => {
+            console.log('TokenURI not found');
+        });
+
+
+        await getMetaData(uri);
+        
         return new NFT({
             nft_type: 'ERC721',
             tx_type: TX_TYPE[txType],
@@ -67,21 +67,27 @@ async function parseERC721Log(log: Log) {
     }
 }
 
-async function getMetaData(uri:string) {
-    
-            // TO-DO Parse TOKEN-URI
-                // TRIM SPACES
-                    // ipfs://
-                    // data:application/json;base64,eyJkZXNjcmlwdGlvbiI6IkdvIHRvIGh0dHBzOi8vZnJlZW5mdC54eXogZXZlcnkgZGF5IHRvIHVwZ3JhZGUgeW91ciBjYXJnbywgbWFpbnRhaW4geW91ciBzdHJlYWsgYW5kIHdpbiByZXdhcmRzLiIsImV4dGVybmFsX3VybCI6Imh0dHBzOi8vZnJlZW5mdC54eXoiLCJpbWFnZSI6Imh0dHBzOi8vYTJ2aDh2azZyNy5leGVjdXRlLWFwaS51cy1lYXN0LTEuYW1hem9uYXdzLmNvbS9wcm9kL2RhaWx5X2NoZXN0X2ltYWdlLzI2IiwibmFtZSI6IkRhaWx5IENhcmdvICMyOTY2IiwiYXR0cmlidXRlcyI6W3sidHJhaXRfdHlwZSI6ICJTdHJlYWsiLCAidmFsdWUiOiIyNiJ9XX0
-                    // https:// || http://
-                    // ar://
+async function getMetaData(uri: string) {
 
+    if (!uri) return null;
+
+    if (uri.startsWith('https://')) {
+        console.log('https')
+    } else if (uri.startsWith('http://')) {
+        console.log('http')
+    }else if (uri.startsWith('ipfs:/')) {
+        console.log('ipfs')
+    }else if (uri.startsWith('data:application/json;base64')) {
+        console.log('base64')
+    }else if (uri.startsWith('ar://')) {
+        console.log('arweave')
+    }
 }
 
-function getTXType (transaction:any){
-    if(transaction.from === '0x0000000000000000000000000000000000000000'){
+function getTXType(transaction: any) {
+    if (transaction.from === '0x0000000000000000000000000000000000000000') {
         return TX_TYPE.MINT;
-    } else if(transaction.to === '0x0000000000000000000000000000000000000000'){
+    } else if (transaction.to === '0x0000000000000000000000000000000000000000') {
         return TX_TYPE.BURN;
     }
     return TX_TYPE.TRANSFER;

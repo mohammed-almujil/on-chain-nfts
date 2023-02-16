@@ -1,7 +1,7 @@
-# On-chain-nft
+## On-chain-nft
 Get on-chain NFT mints/transfer on the ETH blockchains
 
-# contributors
+## Dev
 Clone the repo
 ```
 git clone git@github.com:mohammed-almujil/on-chain-nft.git
@@ -19,5 +19,5 @@ onChainNFT.setEthProvider(PROVIDER_URL)
 
 Run tests locally 
 ```
-ts-node index.ts
+ts-node test.ts
 ```

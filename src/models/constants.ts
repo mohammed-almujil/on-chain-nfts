@@ -4,13 +4,6 @@ enum TX_TYPE {
     TRANSFER,
   }
 
-  enum STORAGE_PREFIX{
-    'ipfs://',
-    'data:application/json;base64',
-    'https:/',
-    'http:/',
-    'ar:/',
-  }
   export {
-    TX_TYPE, STORAGE_PREFIX
+    TX_TYPE,
   }

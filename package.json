@@ -11,14 +11,14 @@
     "url": "git+https://github.com/mohammed-almujil/on-chain-nft.git"
   },
   "keywords": [
+    "get",
     "on-chain",
     "nft",
-    "get",
     "retrieve",
     "mints",
     "transfers",
     "ERC721",
-    "REC1155"
+    "ERC1155"
   ],
   "author": "Mohammed Almujil",
   "license": "ISC",
