@@ -1,9 +1,10 @@
 import Web3 from 'web3';
 const web3 = new Web3();
 
-import { NFT, TX_TYPE } from '../models';
+import { NFT, NFTOptions, TX_TYPE } from '../models';
 import * as ABIs from './ABI';
 import { Log } from './models';
+import { requestMetadata } from '../services';
 
 let options721 = {
     topics: [
@@ -12,9 +13,9 @@ let options721 = {
 };
 
 
-async function getERC721(_blockNumber: string | number) {
+async function getERC721(nftOptions: NFTOptions) {
 
-    const blockNumber = await validateBlockNumber(_blockNumber)
+    const blockNumber = await validateBlockNumber(nftOptions.blockNumber)
     const options = {
         fromBlock: blockNumber,
         toBlock: blockNumber,
@@ -42,17 +43,14 @@ async function parseERC721Log(log: Log) {
         const txType = getTXType(transaction);
         console.log(log.address, transaction.tokenId, log.transactionHash);
         const erc721Contract = new web3.eth.Contract(ABIs.ERC721, log.address);
-
-
         const uri = await erc721Contract.methods.tokenURI(transaction.tokenId).call().catch((err: any) => {
             console.log('TokenURI not found');
         });
 
+        const metadata = await getMetaData(uri);
 
-        await getMetaData(uri);
-        
         return new NFT({
-            nft_type: 'ERC721',
+            nft_type: 'ERC-721',
             tx_type: TX_TYPE[txType],
             block_number: log.blockNumber,
             transaction_hash: log.transactionHash,
@@ -62,7 +60,7 @@ async function parseERC721Log(log: Log) {
             token_contract: log.address,
             token_id: transaction.tokenId,
             token_uri: uri,
-
+            metadata: metadata,
         })
     }
 }
@@ -72,17 +70,18 @@ async function getMetaData(uri: string) {
     if (!uri) return null;
 
     if (uri.startsWith('https://')) {
-        console.log('https')
+        return await requestMetadata(uri);
     } else if (uri.startsWith('http://')) {
-        console.log('http')
-    }else if (uri.startsWith('ipfs:/')) {
+        return await requestMetadata(uri);
+    } else if (uri.startsWith('ipfs:/')) {
         console.log('ipfs')
-    }else if (uri.startsWith('data:application/json;base64')) {
+    } else if (uri.startsWith('data:application/json;base64')) {
         console.log('base64')
-    }else if (uri.startsWith('ar://')) {
+    } else if (uri.startsWith('ar://')) {
         console.log('arweave')
     }
 }
+
 
 function getTXType(transaction: any) {
     if (transaction.from === '0x0000000000000000000000000000000000000000') {
