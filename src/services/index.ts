@@ -1,6 +1,6 @@
 
-import { requestMetadata } from "./getMetadata";
+import { getMetaData, setIpfsHostnames, ipfsHostnames } from "./metadata";
 
 export {
-    requestMetadata,
+    getMetaData, setIpfsHostnames, ipfsHostnames,
 };

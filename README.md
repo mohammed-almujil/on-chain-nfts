@@ -14,7 +14,11 @@ npm install -g ts-node
 ```
 Set the ETH provider URL in test.ts
 ```
-onChainNFT.setEthProvider(PROVIDER_URL)
+onChainNFT.setEthProvider(PROVIDER_URL);
+```
+Optionally set IPFS hostnames. The code will fetch from the provided Hostnames in case one fails. More here https://ipfs.github.io/public-gateway-checker/
+```
+onChainNFT.setIpfsHostnames(['https://gateway.pinata.cloud','https://cloudflare-ipfs.com']);
 ```
 
 Run tests locally 

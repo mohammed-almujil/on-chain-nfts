@@ -4,7 +4,7 @@ const web3 = new Web3();
 import { NFT, NFTOptions, TX_TYPE } from '../models';
 import * as ABIs from './ABI';
 import { Log } from './models';
-import { requestMetadata } from '../services';
+import { getMetaData} from '../services';
 
 let options721 = {
     topics: [
@@ -65,22 +65,6 @@ async function parseERC721Log(log: Log) {
     }
 }
 
-async function getMetaData(uri: string) {
-
-    if (!uri) return null;
-
-    if (uri.startsWith('https://')) {
-        return await requestMetadata(uri);
-    } else if (uri.startsWith('http://')) {
-        return await requestMetadata(uri);
-    } else if (uri.startsWith('ipfs:/')) {
-        console.log('ipfs')
-    } else if (uri.startsWith('data:application/json;base64')) {
-        console.log('base64')
-    } else if (uri.startsWith('ar://')) {
-        console.log('arweave')
-    }
-}
 
 
 function getTXType(transaction: any) {
@@ -105,6 +89,7 @@ async function validateBlockNumber(blockNumber: any) {
 function setProvider(provider: any) {
     web3.setProvider(provider);
 }
+
 
 
 
