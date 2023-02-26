@@ -18,7 +18,7 @@ onChainNFT.setEthProvider(PROVIDER_URL);
 ```
 Optionally set IPFS hostnames. The code will fetch from the provided Hostnames in case one fails. More here https://ipfs.github.io/public-gateway-checker/
 ```
-onChainNFT.setIpfsHostnames(['https://gateway.pinata.cloud','https://cloudflare-ipfs.com']);
+onChainNFT.setIpfsHostnames(['gateway.pinata.cloud','cloudflare-ipfs.com']);
 ```
 
 Run tests locally 

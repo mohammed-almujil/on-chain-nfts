@@ -3,7 +3,16 @@ const onChainNFT = require('./index')
 async function test() {
 
     onChainNFT.setEthProvider(process.env.PROVIDER_URL);
-    onChainNFT.setIpfsHostnames(['https://gateway.pinata.cloud', 'https://cloudflare-ipfs.com'])
+    onChainNFT.setIpfsHostnames([
+        'gateway.pinata.cloud',
+        'cloudflare-ipfs.com',
+        'ipfs-gateway.cloud',
+        'gateway.ipfs.io',
+        '4everland.io',
+        'cf-ipfs.com',
+        'ipfs.jpu.jp',
+        'dweb.link',
+        ]);
 
     console.log('# Testing get latest ERC721 with 100 block confirmations')
     const defaultOption = await onChainNFT.getERC721({

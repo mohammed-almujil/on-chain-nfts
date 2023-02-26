@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-let ipfsHostnames: string[] = ['https://cloudflare-ipfs.com'];
+let ipfsHostnames: any = ['cloudflare-ipfs.com'];
 
 
 async function getMetaData(uri: string) {
@@ -41,15 +41,23 @@ async function requestMetadata(uri: string) {
 
 async function getIpfsMetadata(uri: any) {
 
+    const cloneIpfsHostnames = [...ipfsHostnames];
+
     let json;
-    for (let x = 0; x < ipfsHostnames.length; x++) {
-        json = await requestMetadata(ipfsHostnames[x] + '/ipfs/' + uri.split('ipfs://')[1])
+    for (let x = 0; x < cloneIpfsHostnames.length; x++) {
+        json = await requestMetadata('https://' + cloneIpfsHostnames[x] + '/ipfs/' + uri.split('ipfs://')[1])
 
         if (json) break;
+
+        pushFailedHostnameToEnd();
     }
     return json;
 }
 
+
+function pushFailedHostnameToEnd(){
+    ipfsHostnames.push(ipfsHostnames.shift());
+}
 function setIpfsHostnames(hostnames: string[]) {
     ipfsHostnames = hostnames;
 }
