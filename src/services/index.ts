@@ -1,6 +1,6 @@
 
-import { getMetaData, setIpfsHostnames, ipfsHostnames } from "./metadata";
+import { getMetaData, setIpfsHostnames, setArweaveHostnames } from "./metadata";
 
 export {
-    getMetaData, setIpfsHostnames, ipfsHostnames,
+    getMetaData, setIpfsHostnames, setArweaveHostnames
 };

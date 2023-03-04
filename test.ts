@@ -12,7 +12,10 @@ async function test() {
         'cf-ipfs.com',
         'ipfs.jpu.jp',
         'dweb.link',
-        ]);
+    ]);
+    onChainNFT.setArweaveHostnames([
+        'arweave.net',
+    ]);
 
     console.log('# Testing get latest ERC721 with 100 block confirmations')
     const defaultOption = await onChainNFT.getERC721({
@@ -25,7 +28,7 @@ async function test() {
 
     console.log('-------------------------------------------');
     console.log('# Testing get NFTs by block number')
-    let blockNumber = 16682812
+    let blockNumber = 16725346
     let blockNumberOption = await onChainNFT.getERC721({ blockNumber: blockNumber })
     console.log(JSON.stringify(blockNumberOption));
     console.log('found ' + blockNumberOption.length + ' NFTs in block ' + blockNumber);
@@ -46,6 +49,18 @@ async function test() {
     blockNumberOption = await onChainNFT.getERC721({ blockNumber: blockNumber })
     console.log(JSON.stringify(blockNumberOption));
     console.log('found ' + blockNumberOption.length + ' NFTs in block ' + blockNumber);
+
+    console.log('-------------------------------------------');
+    console.log('# Testing blocks with over 300 base64 tokenURIs')
+    blockNumber = 16740129
+    blockNumberOption = await onChainNFT.getERC721({ blockNumber: blockNumber })
+    console.log(JSON.stringify(blockNumberOption));
+    console.log('found ' + blockNumberOption.length + ' NFTs in block ' + blockNumber);
+
+    
+    // TO-DO
+    // TEST blocks with IPFS, Arweave and base64/ 
+    // test Set hostname with one hostname for both IPFS and arweave
 }
 
 
