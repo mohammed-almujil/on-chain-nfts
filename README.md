@@ -1,5 +1,5 @@
 ## On-chain-nft
-Get on-chain NFT mints/transfer/burn on the ETH blockchain including their metadata. Supported metadata formats:
+Get on-chain NFT mints/transfers/burns including their metadata. Supported metadata formats:
 - http/https
 - IPFS
 - Arweave
