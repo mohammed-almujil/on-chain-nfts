@@ -1,0 +1,18 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": "standard-with-typescript",
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "comma-dangle": ["error", "always"],
+        "semi": [2, "always"],
+        "quotes": [2, "single", { "avoidEscape": true }]
+    }
+}
