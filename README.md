@@ -1,5 +1,9 @@
 ## On-chain-nft
-Get on-chain NFT mints/transfer on the ETH blockchains
+Get on-chain NFT mints/transfer/burn on the ETH blockchain including their metadata. Supported metadata formats:
+- http/https
+- IPFS
+- Arweave
+- Base64
 
 ## Dev
 Clone the repo
@@ -12,11 +16,16 @@ Install dependencies
 npm install
 npm install -g ts-node
 ```
-Set the ETH provider URL in test.ts
+Set ETH provider URL in test.ts
 ```
 onChainNFT.setEthProvider(PROVIDER_URL);
 ```
-Optionally set IPFS hostnames. The code will fetch from the provided Hostnames in case one fails. More here https://ipfs.github.io/public-gateway-checker/
+Optionally set IPFS hostnames. The code will try the hostnames one by one in case of failure. More here https://ipfs.github.io/public-gateway-checker/
+```
+onChainNFT.setIpfsHostnames(['gateway.pinata.cloud','cloudflare-ipfs.com']);
+```
+
+Optionally set Arweave hostnames. The code will try the hostnames one by one in case of failure.
 ```
 onChainNFT.setIpfsHostnames(['gateway.pinata.cloud','cloudflare-ipfs.com']);
 ```
