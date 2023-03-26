@@ -78,7 +78,7 @@ async function requestMetadata(uri: string) {
   if (containsEncodedComponents(uri)) {
     uri = decodeURIComponent(uri)
   }
-
+  console.log('Metadata fetch', uri)
   let json
 
   try {
