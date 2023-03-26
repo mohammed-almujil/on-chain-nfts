@@ -1,5 +1,2 @@
-import Log from "./log";
-
-export {
-    Log,
-};
+import Log from './log'
+export { Log }

@@ -1,9 +1,7 @@
 enum TX_TYPE {
-    MINT,
-    BURN,
-    TRANSFER,
-  }
+  MINT,
+  BURN,
+  TRANSFER,
+}
 
-  export {
-    TX_TYPE,
-  }
+export { TX_TYPE }

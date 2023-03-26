@@ -9,10 +9,5 @@
     ],
     "parserOptions": {
         "ecmaVersion": "latest"
-    },
-    "rules": {
-        "comma-dangle": ["error", "always"],
-        "semi": [2, "always"],
-        "quotes": [2, "single", { "avoidEscape": true }]
     }
 }
