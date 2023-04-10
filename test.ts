@@ -1,4 +1,4 @@
-const onChainNFT = require('./index')
+const onChainNFT = require('./src/')
 
 async function test() {
   onChainNFT.setEthProvider(process.env.PROVIDER_URL);
