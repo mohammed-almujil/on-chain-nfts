@@ -4,6 +4,9 @@
   "description": "Get on-chain NFT mints/transfers/burns including their metadata",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "test": "ts-node test.ts && exit 1",
     "build": "tsc"
