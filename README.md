@@ -29,15 +29,15 @@ onChainNFT.setArweaveHostnames([
 ```
 Get all NFTs
 ```
-const result = await onChainNFT.getEthNFTs({ blockNumber: blockNumber });
+const result = await onChainNFT.getEthNFTs({ blockNumber: 17166445 });
 ```
 Get ERC-721  only
 ```
-const result = await onChainNFT.getERC721({ blockNumber: blockNumber });
+const result = await onChainNFT.getERC721({ blockNumber: 17166445 });
 ```
 GET ERC-1155 only
 ```
-const result = await onChainNFT.getERC1155({ blockNumber: blockNumber });
+const result = await onChainNFT.getERC1155({ blockNumber: 17166445 });
 
 ```
 
