@@ -1,53 +1,100 @@
-## On-chain-nft
-Get on-chain NFT mints/transfers/burns including their metadata. Supported metadata formats:
-- http/https
-- IPFS
-- Arweave
-- Base64
-
-## Dev
-Clone the repo
-```
-git clone git@github.com:mohammed-almujil/on-chain-nfts.git
-cd on-chain-nfts
-```
-Install dependencies
-```
-npm install
-npm install -g ts-node
-```
-
-### **Ethereum**
-
-ETH NFTs
-```
-const onChainNFT = require('./index')
-
-onChainNFT.setEthProvider(PROVIDER_URL);
-
-//All NFTs
-const all = await onChainNFT.getEthNFTs({ blockNumber: blockNumber });
-
-//ERC-721 NFTs only
-const erc721 = await onChainNFT.getERC721({ blockNumber: blockNumber });
-
-//ERC-1155 only
-const erc1155 = await onChainNFT.getERC1155({ blockNumber: blockNumber });
+Import library 
 
 ```
+import * as onChainNFT  from 'on-chain-nfts'
+```
+# ETH
+Set ETH provider
+```
+onChainNFT.setEthProvider(process.env.PROVIDER_URL);
+```
+Optionally set IPFS hostnames. More here https://ipfs.github.io/public-gateway-checker/
+```
+onChainNFT.setIpfsHostnames([
+    'gateway.pinata.cloud',
+    'cloudflare-ipfs.com',
+    'ipfs-gateway.cloud',
+    'gateway.ipfs.io',
+    '4everland.io',
+    'cf-ipfs.com',
+    'ipfs.jpu.jp',
+    'dweb.link'
+  ]);
+```
+Optionally set Arweave hostnames
+```
+onChainNFT.setArweaveHostnames([
+    'arweave.net'
+  ]);
+```
+Get all NFTs
+```
+const result = await onChainNFT.getEthNFTs({ blockNumber: blockNumber });
+```
+Get ERC-721  only
+```
+const result = await onChainNFT.getERC721({ blockNumber: blockNumber });
+```
+GET ERC-1155 only
+```
+const result = await onChainNFT.getERC1155({ blockNumber: blockNumber });
 
-Optionally set IPFS hostnames. The code will try the hostnames one by one in case of failure. More here https://ipfs.github.io/public-gateway-checker/
-```
-onChainNFT.setIpfsHostnames(['gateway.pinata.cloud','cloudflare-ipfs.com']);
 ```
 
-Optionally set Arweave hostnames. The code will try the hostnames one by one in case of failure.
+Example results 
 ```
-onChainNFT.setArweaveHostnames(['arweave.net']);
+[
+    {
+        "nft_type": "ERC-721",
+        "tx_type": "TRANSFER",
+        "block_number": 17166445,
+        "transaction_hash": "0x2a5a692383fbab5c43b70fe3ff501a80d7e0540b75d2f3d2c9de86ace8f57607",
+        "chain": "Ethereum",
+        "from": "0x3bEd6c7Ec492D0d57f68F8c402FB7e2DE51c1165",
+        "to": "0x743776E5A345fE62d7D85282407c94E616A03176",
+        "token_contract": "0x32973908FaeE0Bf825A343000fE412ebE56F802A",
+        "token_id": "4555",
+        "token_uri": "https://pixelmon.club/api/4555",
+        "metadata": {
+            "name": "Pixelmon #4555",
+            "image_url": "https://pixelmon-training-rewards.s3-accelerate.amazonaws.com/0/Tatsumaki.jpg",
+            "external_url": "https://pixelmon.club/",
+            "reward_bitmask": 6,
+            "attributes": [
+                {
+                    "trait_type": "Species",
+                    "value": "Tatsumaki"
+                },
+                ...
+            ],
+            "animation_url": "https://pixelmon-training-rewards.s3-accelerate.amazonaws.com/6/Tatsumaki.mp4"
+        }
+    },
+    {
+        "nft_type": "ERC-1155",
+        "tx_type": "TRANSFER",
+        "block_number": 17166445,
+        "transaction_hash": "0x2a5a692383fbab5c43b70fe3ff501a80d7e0540b75d2f3d2c9de86ace8f57607",
+        "chain": "Ethereum",
+        "from": "0x3bEd6c7Ec492D0d57f68F8c402FB7e2DE51c1165",
+        "to": "0x000000000000000000000000000000000000dEaD",
+        "token_contract": "0xADaE0Ddaf90170a44ADEbcFB8eeDE12041D13220",
+        "token_id": "2",
+        "token_value": "3",
+        "token_uri": "https://pixelmon.club/api/serum/meta/2",
+        "metadata": {
+            "name": "Tube",
+            "animation_url": "https://pixelmon.club/serum/tube.mp4",
+            "image_url": "https://pixelmon.club/serum/tube.png",
+            "attributes": [
+                {
+                    "trait_type": "Evolution Stage",
+                    "value": "E2"
+                },
+                ...
+            ]
+        }
+    }
+]
 ```
-### **Tests**
 
-Run tests locally, make sure PROVIDER_URL ENV variable is set then run
-```
-ts-node test.ts
-```
