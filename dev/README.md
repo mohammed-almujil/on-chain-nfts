@@ -51,3 +51,14 @@ Run tests locally, make sure PROVIDER_URL ENV variable is set then run
 ```
 ts-node test.ts
 ```
+
+### **NPM publishing**
+
+Build
+```
+npm run build
+```
+Publish. Only files in the `dist` folder will be pushed
+```
+npm publish
+```

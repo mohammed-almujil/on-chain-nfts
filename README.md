@@ -1,9 +1,10 @@
-Import library 
+Get on-chain NFT mints/transfers/burns including their metadata.
 
+# Get started
 ```
 import * as onChainNFT  from 'on-chain-nfts'
 ```
-# ETH
+## ETH
 Set ETH provider
 ```
 onChainNFT.setEthProvider(process.env.PROVIDER_URL);
