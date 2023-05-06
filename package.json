@@ -1,6 +1,6 @@
 {
   "name": "on-chain-nfts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Get on-chain NFT mints/transfers/burns including their metadata",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
