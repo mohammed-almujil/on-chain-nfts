@@ -1,26 +1,26 @@
-import * as eth from './eth'
+import * as evm from './evm'
 import { type NFTOptions, } from './models'
 import { setIpfsHostnames, setArweaveHostnames } from './services'
 
 async function getERC721(NFTOptions: NFTOptions) {
-  const NFTs = await eth.getERC721(NFTOptions,);
+  const NFTs = await evm.getERC721(NFTOptions,);
   const result = NFTs.map((nft) => nft.toDict());
   return result;
 }
 
 async function getERC1155(NFTOptions: NFTOptions) {
-  const NFTs = await eth.getERC1155(NFTOptions,);
+  const NFTs = await evm.getERC1155(NFTOptions,);
   const result = NFTs.map((nft) => nft.toDict());
   return result;
 }
 
-async function getEthNFTs(NFTOptions: NFTOptions) {
-  const NFTs = await eth.getNFTs(NFTOptions,);
+async function getEvmNFTs(NFTOptions: NFTOptions) {
+  const NFTs = await evm.getNFTs(NFTOptions,);
   const result = NFTs.map((nft) => nft.toDict());
   return result;
 }
 
-async function setEthProvider (provider : string){
-  eth.setProvider(provider)
+async function setEvmProvider (provider : string){
+  evm.setProvider(provider)
 }
-export { setArweaveHostnames, setIpfsHostnames, setEthProvider, getERC721, getERC1155, getEthNFTs }
+export { setArweaveHostnames, setIpfsHostnames, setEvmProvider, getERC721, getERC1155, getEvmNFTs }

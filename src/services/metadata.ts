@@ -1,22 +1,27 @@
 import axios from 'axios'
+import { MetadataResponse } from '../models'
 
 let ipfsHostnames: any = ['cloudflare-ipfs.com']
 let arweaveHostnames: any = ['arweave.net']
 
+
 async function getMetaData(uri: string) {
-  if (!uri) return null
+
+
+  let metadataResponse = <MetadataResponse>{};
 
   if (uri.startsWith('https://')) {
-    return await requestMetadata(uri)
+    metadataResponse = await requestMetadata(uri)
   } else if (uri.startsWith('http://')) {
-    return await requestMetadata(uri)
+    metadataResponse = await requestMetadata(uri)
   } else if (uri.startsWith('ipfs://')) {
-    return await getIpfsMetadata(uri)
+    metadataResponse = await getIpfsMetadata(uri)
   } else if (uri.startsWith('data:application/json;base64,')) {
-    return getBase64Metadata(uri)
+    metadataResponse = getBase64Metadata(uri)
   } else if (uri.startsWith('ar://')) {
-    return await getArweaveMetadata(uri)
+    metadataResponse = await getArweaveMetadata(uri)
   }
+  return metadataResponse
 }
 
 async function getIpfsMetadata(uri: any) {
@@ -25,45 +30,46 @@ async function getIpfsMetadata(uri: any) {
   if (uri.startsWith('ipfs/')) {
     uri = uri.split('ipfs/')[1]
   }
-  let json
+
+  let metadataResponse = {} as MetadataResponse;
   for (let x = 0; x < cloneIpfsHostnames.length; x++) {
-    json = await requestMetadata(
+    metadataResponse = await requestMetadata(
       'https://' + cloneIpfsHostnames[x] + '/ipfs/' + uri
     )
-
-    if (json) break
+    if (metadataResponse.metadata) break
 
     pushFailedIpfsHostnameToEnd()
   }
-  return json
+  return metadataResponse
 }
 
 async function getArweaveMetadata(uri: any) {
   const cloneArweaveHostnames = [...arweaveHostnames]
   uri = uri.split('ar://')[1]
 
-  let json
+  let metadataResponse = {} as MetadataResponse;
+
   for (let x = 0; x < cloneArweaveHostnames.length; x++) {
-    json = await requestMetadata(
+    metadataResponse = await requestMetadata(
       'https://' + cloneArweaveHostnames[x] + '/' + uri
     )
 
-    if (json) break
+    if (metadataResponse) break
 
     pushFailedArweaveHostnameToEnd()
   }
-  return json
+  return metadataResponse
 }
 
-function getBase64Metadata(uri: any) {
-  uri = uri.split('data:application/json;base64,')[1]
+function getBase64Metadata(metadataFetchUri: any) {
+  metadataFetchUri = metadataFetchUri.split('data:application/json;base64,')[1]
 
-  let json
+  let metadata
 
   try {
-    const metadataFromBase64 = Buffer.from(uri, 'base64').toString('utf8')
+    const metadataFromBase64 = Buffer.from(metadataFetchUri, 'base64').toString('utf8')
     if (metadataFromBase64) {
-      json = JSON.parse(metadataFromBase64)
+      metadata = JSON.parse(metadataFromBase64)
     }
   } catch (error: any) {
     if (error) {
@@ -71,19 +77,19 @@ function getBase64Metadata(uri: any) {
     }
   }
 
-  return json
+  return <MetadataResponse>{ metadata: metadata, metadataFetchUri: metadataFetchUri }
 }
 
-async function requestMetadata(uri: string) {
-  if (containsEncodedComponents(uri)) {
-    uri = decodeURIComponent(uri)
+async function requestMetadata(metadataFetchUri: string) {
+  if (containsEncodedComponents(metadataFetchUri)) {
+    metadataFetchUri = decodeURIComponent(metadataFetchUri)
   }
-  console.log('Metadata fetch', uri)
-  let json
+  console.log('Metadata fetch', metadataFetchUri)
+  let metadata
 
   try {
-    const response = await axios(uri, { timeout: 30000 })
-    json = response.data
+    const response = await axios(metadataFetchUri, { timeout: 30000 })
+    metadata = response.data
   } catch (error: any) {
     if (error.code === 'ECONNABORTED') {
       console.log('metadata error: timeout')
@@ -92,7 +98,7 @@ async function requestMetadata(uri: string) {
       console.log('metadata error: status code ' + error.response.status)
     }
   }
-  return json
+  return <MetadataResponse>{ metadata: metadata, metadataFetchUri: metadataFetchUri }
 }
 
 function containsEncodedComponents(uri: string) {

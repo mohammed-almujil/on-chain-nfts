@@ -10,6 +10,7 @@ class NFT {
   token_id: number
   token_value: string
   token_uri: string
+  metadata_fetch_uri: string
   metadata: any
 
   constructor(nft: any) {
@@ -24,6 +25,7 @@ class NFT {
     this.token_id = nft.token_id
     this.token_value = nft.token_value
     this.token_uri = nft.token_uri ? nft.token_uri : null
+    this.metadata_fetch_uri = nft.metadata_fetch_uri? nft.metadata_fetch_uri: null
     this.metadata = nft.metadata ? nft.metadata : null
   }
 
@@ -40,6 +42,7 @@ class NFT {
       token_id: this.token_id,
       token_value: this.token_value,
       token_uri: this.token_uri,
+      metadata_fetch_uri: this.metadata_fetch_uri,
       metadata: this.metadata
     }
   }

@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import { NFT, type NFTOptions, TX_TYPE } from '../models'
+import { NFT, type NFTOptions, TX_TYPE, MetadataResponse } from '../models'
 import * as ABIs from './ABI'
 import { type Log } from './models'
 import { getMetaData } from '../services'
@@ -16,8 +16,8 @@ async function getNFTs(nftOptions: NFTOptions) {
   const NFTs: NFT[] = []
   const erc721NFTs = await getERC721(nftOptions);
   NFTs.push(...erc721NFTs);
-  const Single1155NFTs = await getERC1155(nftOptions)
-  NFTs.push(...Single1155NFTs);
+  const Erc1155NFTs = await getERC1155(nftOptions)
+  NFTs.push(...Erc1155NFTs);
 
   return NFTs
 }
@@ -114,7 +114,7 @@ async function parseERC721Log(log: Log) {
   const uri = await erc721Contract.methods.tokenURI(transaction.tokenId).call().catch((err: any) => {
     //console.log('TokenURI not found')
   })
-
+  console.log('original uri:', uri)
   const metadata = await getMetaData(uri)
 
   return new NFT({
@@ -122,12 +122,12 @@ async function parseERC721Log(log: Log) {
     tx_type: TX_TYPE[txType],
     block_number: log.blockNumber,
     transaction_hash: log.transactionHash,
-    chain: 'Ethereum',
     from: transaction.from,
     to: transaction.to,
     token_contract: log.address,
     token_id: transaction.tokenId,
     token_uri: uri,
+    metadata_fetch_uri: uri,
     metadata
   })
 }
@@ -148,12 +148,15 @@ async function parseSingleERC1155Log(log: Log) {
     originalUri = await getUriFromEvent(ercSingle1155Contract, transaction.id)
   }
 
-  let uri = replaceUriSubstitution(originalUri, transaction.id, 'standard')
-  let metadata = await getMetaData(uri)
+  console.log('original uri:', originalUri)
 
-  if (!metadata) {
+  let uri = replaceUriSubstitution(originalUri, transaction.id, 'standard')
+
+  let metadataResponse: MetadataResponse = await getMetaData(uri)
+
+  if (!metadataResponse.metadata) {
     uri = replaceUriSubstitution(originalUri, transaction.id, 'nonstandard')
-    metadata = await getMetaData(uri)
+    metadataResponse = await getMetaData(uri)
   }
 
   return new NFT({
@@ -161,14 +164,14 @@ async function parseSingleERC1155Log(log: Log) {
     tx_type: TX_TYPE[txType],
     block_number: log.blockNumber,
     transaction_hash: log.transactionHash,
-    chain: 'Ethereum',
     from: transaction.from,
     to: transaction.to,
     token_contract: log.address,
     token_id: transaction.id,
     token_value: transaction.value,
-    token_uri: uri,
-    metadata
+    token_uri: originalUri,
+    metadata_fetch_uri: metadataResponse.metadataFetchUri,
+    metadata: metadataResponse.metadata
   })
 }
 async function parseMultiERC1155Log(log: Log) {
@@ -190,7 +193,7 @@ async function parseMultiERC1155Log(log: Log) {
     if (!originalUri) {
       originalUri = await getUriFromEvent(ercMulti1155Contract, transaction.ids[i])
     }
-    //console.log('original uri', originalUri);
+    console.log('original uri:', originalUri)
 
     let uri = replaceUriSubstitution(originalUri, transaction.ids[i], 'standard')
     let metadata = await getMetaData(uri)
@@ -205,13 +208,13 @@ async function parseMultiERC1155Log(log: Log) {
       tx_type: TX_TYPE[txType],
       block_number: log.blockNumber,
       transaction_hash: log.transactionHash,
-      chain: 'Ethereum',
       from: transaction.from,
       to: transaction.to,
       token_contract: log.address,
       token_id: transaction.ids[i],
       token_value: transaction.values[i],
-      token_uri: uri,
+      token_uri: originalUri,
+      metadata_fetch_uri: uri,
       metadata
     }))
   }
@@ -265,4 +268,4 @@ async function validateBlockNumber(blockNumber: any) {
 function setProvider(provider: any) {
   web3.setProvider(provider)
 }
-export { getNFTs,getERC721, getERC1155, setProvider }
+export { getNFTs, getERC721, getERC1155, setProvider }

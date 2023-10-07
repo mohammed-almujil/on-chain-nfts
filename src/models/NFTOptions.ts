@@ -1,13 +1,13 @@
 class NFTOptions {
   blockNumber: string | number
 
-  constructor (NFTOptions: any) {
+  constructor(NFTOptions: any) {
     this.blockNumber = NFTOptions.blockNumber
       ? NFTOptions.blockNumber
       : 'latest'
   }
 
-  toDict () {
+  toDict() {
     return {
       blockNumber: this.blockNumber
     }

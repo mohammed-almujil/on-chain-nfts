@@ -4,10 +4,10 @@ Get on-chain NFT mints/transfers/burns including their metadata.
 ```
 import * as onChainNFT  from 'on-chain-nfts'
 ```
-## ETH
-Set ETH provider
+## EVM
+Set EVM provider
 ```
-onChainNFT.setEthProvider(process.env.PROVIDER_URL);
+onChainNFT.setEvmProvider(process.env.PROVIDER_URL);
 ```
 Optionally set IPFS hostnames. More here https://ipfs.github.io/public-gateway-checker/
 ```
@@ -30,7 +30,7 @@ onChainNFT.setArweaveHostnames([
 ```
 Get all NFTs
 ```
-const result = await onChainNFT.getEthNFTs({ blockNumber: 17166445 });
+const result = await onChainNFT.getEvmNFTs({ blockNumber: 17166445 });
 ```
 Get ERC-721  only
 ```
